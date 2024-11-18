@@ -61,5 +61,15 @@
   },
   "publishConfig": {
     "registry": "https://registry.npmjs.org/"
-  }
+  },
+  "funding": [
+    {
+      "type": "github",
+      "url": "https://github.com/sponsors/SeleniumHQ"
+    },
+    {
+      "type": "opencollective",
+      "url": "https://opencollective.com/selenium"
+    }
+  ]
 }
