@@ -199,11 +199,11 @@ namespace OpenQA.Selenium.Environment
         {
             if (remoteServer != null)
             {
-                remoteServer.Stop();
+                remoteServer.StopAsync().Wait();
             }
             if (webServer != null)
             {
-                webServer.Stop();
+                webServer.StopAsync().Wait();
             }
             CloseCurrentDriver();
         }

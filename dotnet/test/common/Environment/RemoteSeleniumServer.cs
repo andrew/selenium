@@ -22,6 +22,7 @@ using System.Diagnostics;
 using System.IO;
 using System.Net;
 using System.Net.Http;
+using System.Threading.Tasks;
 
 namespace OpenQA.Selenium.Environment
 {
@@ -38,7 +39,7 @@ namespace OpenQA.Selenium.Environment
             autoStart = autoStartServer;
         }
 
-        public void Start()
+        public async Task StartAsync()
         {
             if (autoStart && (webserverProcess == null || webserverProcess.HasExited))
             {
@@ -67,7 +68,7 @@ namespace OpenQA.Selenium.Environment
                 {
                     try
                     {
-                        using var response = httpClient.GetAsync("http://localhost:6000/wd/hub/status").GetAwaiter().GetResult();
+                        using var response = await httpClient.GetAsync("http://localhost:6000/wd/hub/status");
 
                         if (response.StatusCode == HttpStatusCode.OK)
                         {
@@ -86,7 +87,7 @@ namespace OpenQA.Selenium.Environment
             }
         }
 
-        public void Stop()
+        public async Task StopAsync()
         {
             if (autoStart && webserverProcess != null && !webserverProcess.HasExited)
             {
@@ -94,7 +95,7 @@ namespace OpenQA.Selenium.Environment
 
                 try
                 {
-                    using var response = httpClient.GetAsync("http://localhost:6000/selenium-server/driver?cmd=shutDownSeleniumServer").GetAwaiter().GetResult();
+                    using var response = await httpClient.GetAsync("http://localhost:6000/selenium-server/driver?cmd=shutDownSeleniumServer");
                 }
                 catch (Exception ex) when (ex is HttpRequestException || ex is TimeoutException)
                 {

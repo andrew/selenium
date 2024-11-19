@@ -25,6 +25,7 @@ using System.Net;
 using System.Net.Http;
 using System.Runtime.InteropServices;
 using System.Text;
+using System.Threading.Tasks;
 
 namespace OpenQA.Selenium.Environment
 {
@@ -50,7 +51,7 @@ namespace OpenQA.Selenium.Environment
             this.port = config.Port;
         }
 
-        public void Start()
+        public async Task StartAsync()
         {
             if (webserverProcess == null || webserverProcess.HasExited)
             {
@@ -146,7 +147,7 @@ namespace OpenQA.Selenium.Environment
                 {
                     try
                     {
-                        using var response = httpClient.GetAsync(EnvironmentManager.Instance.UrlBuilder.LocalWhereIs("simpleTest.html")).GetAwaiter().GetResult();
+                        using var response = await httpClient.GetAsync(EnvironmentManager.Instance.UrlBuilder.LocalWhereIs("simpleTest.html"));
 
                         if (response.StatusCode == HttpStatusCode.OK)
                         {
@@ -174,7 +175,7 @@ namespace OpenQA.Selenium.Environment
             }
         }
 
-        public void Stop()
+        public async Task StopAsync()
         {
             if (webserverProcess != null)
             {
@@ -182,7 +183,7 @@ namespace OpenQA.Selenium.Environment
                 {
                     try
                     {
-                        using (httpClient.GetAsync(EnvironmentManager.Instance.UrlBuilder.LocalWhereIs("quitquitquit")).GetAwaiter().GetResult())
+                        using (await httpClient.GetAsync(EnvironmentManager.Instance.UrlBuilder.LocalWhereIs("quitquitquit")))
                         {
 
                         }

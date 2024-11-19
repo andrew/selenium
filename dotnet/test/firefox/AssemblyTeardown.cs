@@ -19,6 +19,7 @@
 
 using NUnit.Framework;
 using OpenQA.Selenium.Environment;
+using System.Threading.Tasks;
 
 namespace OpenQA.Selenium.Firefox
 {
@@ -27,16 +28,16 @@ namespace OpenQA.Selenium.Firefox
     public class MySetUpClass
     {
         [OneTimeSetUp]
-        public void RunBeforeAnyTest()
+        public async Task RunBeforeAnyTestAsync()
         {
-            EnvironmentManager.Instance.WebServer.Start();
+            await EnvironmentManager.Instance.WebServer.StartAsync();
         }
 
         [OneTimeTearDown]
-        public void RunAfterAnyTests()
+        public async Task RunAfterAnyTestsAsync()
         {
             EnvironmentManager.Instance.CloseCurrentDriver();
-            EnvironmentManager.Instance.WebServer.Stop();
+            await EnvironmentManager.Instance.WebServer.StopAsync();
         }
     }
 }

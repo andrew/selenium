@@ -19,6 +19,7 @@
 
 using NUnit.Framework;
 using OpenQA.Selenium.Environment;
+using System.Threading.Tasks;
 
 namespace OpenQA.Selenium
 {
@@ -31,25 +32,25 @@ namespace OpenQA.Selenium
         }
 
         [OneTimeSetUp]
-        public void RunBeforeAnyTest()
+        public async Task RunBeforeAnyTestAsync()
         {
             Internal.Logging.Log.SetLevel(Internal.Logging.LogEventLevel.Trace);
 
-            EnvironmentManager.Instance.WebServer.Start();
+            await EnvironmentManager.Instance.WebServer.StartAsync();
             if (EnvironmentManager.Instance.Browser == Browser.Remote)
             {
-                EnvironmentManager.Instance.RemoteServer.Start();
+                await EnvironmentManager.Instance.RemoteServer.StartAsync();
             }
         }
 
         [OneTimeTearDown]
-        public void RunAfterAnyTests()
+        public async Task RunAfterAnyTestsAsync()
         {
             EnvironmentManager.Instance.CloseCurrentDriver();
-            EnvironmentManager.Instance.WebServer.Stop();
+            await EnvironmentManager.Instance.WebServer.StopAsync();
             if (EnvironmentManager.Instance.Browser == Browser.Remote)
             {
-                EnvironmentManager.Instance.RemoteServer.Stop();
+                await EnvironmentManager.Instance.RemoteServer.StopAsync();
             }
         }
     }
